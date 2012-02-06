@@ -510,7 +510,8 @@ class PersonLite(models.Model):
     surname = models.CharField(max_length=50)
     
     def __unicode__(self):
-        return unicode(self.given_name + " " + self.middle_names + " " + self.surname)
+        # TODO: make it smarter, i.e. don't include empty/None strings
+        return u"%s %s %s" % (self.given_name, self.middle_names, self.surname)
     
     def __getInitials(self):
         if self.given_name <> '' and self.middle_names <> '':
@@ -687,7 +688,7 @@ class Membership(models.Model):
         else:
             return unicode(self.role)
     
-    def save(self):
+    def save(self, *args, **kwargs):
         """
         The rules:
                 order                 importance_to_entity
@@ -713,7 +714,7 @@ class Membership(models.Model):
                 self.importance_to_person = 2
             if self.importance_to_entity < 2:  
                 self.importance_to_entity = 2 # and importance_to_entity must be 2
-        super(Membership, self).save()
+        super(Membership, self).save(*args, **kwargs)
 
 
 class EntityAutoPageLinkPluginEditor(CMSPlugin):

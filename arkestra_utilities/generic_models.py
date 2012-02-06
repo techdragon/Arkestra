@@ -1,7 +1,8 @@
+from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
-
+from datetime import datetime
 from cms.models.fields import PlaceholderField
 
 from filer.fields.image import FilerImageField
@@ -25,7 +26,11 @@ class ArkestraGenericModel(models.Model):
         help_text= u"e.g. Man bites dog (if left blank, will be copied from Title)")
     summary = models.TextField(verbose_name="Summary",
         null=False, blank=False, 
-        help_text="e.g. Cardiff man arrested in latest wave of man-on-dog violence (maximum two lines)",)
+        help_text="e.g. Cardiff man arrested in latest wave of man-on-dog violence (maximum two lines)")
+    published = models.BooleanField(default=True, verbose_name=_(u"Is published"), db_index=True,
+        help_text=_(u"Unless selected, this item will not be published"))
+    in_lists = models.BooleanField(_(u"Show in lists"), default=True, db_index=True,
+        help_text=_(u"Unless selected, this item will only be available if you know the URL"))
     body = PlaceholderField('body', help_text="Not used or required for external items")    
     image = FilerImageField(null=True, blank=True)
 
@@ -36,7 +41,7 @@ class ArkestraGenericModel(models.Model):
     publish_to = models.ManyToManyField(Entity, null=True, blank=True, related_name="%(class)s_publish_to",
         help_text=u"Use these sensibly - don't send minor items to the home page, for example")
     please_contact = models.ManyToManyField(Person, related_name='%(class)s_person', 
-        help_text=u'The person to whom enquiries about this should be directed ', 
+        help_text=u"The person to whom enquiries about this should be directed", 
         null=True, blank=True)
     IMPORTANCES = (
         (0, u"Normal"),
@@ -46,6 +51,10 @@ class ArkestraGenericModel(models.Model):
     importance = models.PositiveIntegerField(null=True, blank=False,
         default=0, choices=IMPORTANCES,
         help_text=u"Important items will be featured in lists")
+
+    # These fields are only used for bookkeeping, not shown in admin
+    creation_date = models.DateTimeField(auto_now_add=True, default=datetime.now)
+    changed_date = models.DateTimeField(auto_now=True, default=datetime.now)
 
     @property
     def has_expired(self):
