@@ -52,6 +52,8 @@ class ArkestraGenericModel(models.Model):
         default=0, choices=IMPORTANCES,
         help_text=u"Important items will be featured in lists")
 
+    folder = models.ForeignKey('filer.Folder', verbose_name=_(u"Folder"), null=True, blank=True,
+        help_text=_(u"Folder for related data, not necessarily shown on the webpage."))
     # These fields are only used for bookkeeping, not shown in admin
     creation_date = models.DateTimeField(auto_now_add=True, default=datetime.now)
     changed_date = models.DateTimeField(auto_now=True, default=datetime.now)
