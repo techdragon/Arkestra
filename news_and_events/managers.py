@@ -10,10 +10,6 @@ MULTIPLE_ENTITY_MODE = settings.MULTIPLE_ENTITY_MODE
 COLLECT_TOP_ALL_FORTHCOMING_EVENTS = settings.COLLECT_TOP_ALL_FORTHCOMING_EVENTS
 
 
-class NewsArticleManager(ArkestraGenericModelManager):
-    pass
-
-
 class EventManager(ArkestraGenericModelManager):
     def get_items(self, instance):    
         self.get_events(instance) # gets previous_events, forthcoming_events, top_events, ordinary_events

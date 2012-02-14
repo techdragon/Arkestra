@@ -20,12 +20,10 @@ PLUGIN_HEADING_LEVELS = settings.PLUGIN_HEADING_LEVELS
 PLUGIN_HEADING_LEVEL_DEFAULT = settings.PLUGIN_HEADING_LEVEL_DEFAULT
 DATE_FORMAT = settings.ARKESTRA_DATE_FORMAT
 
-class ProjectManager(ArkestraGenericModelManager):
-    pass
 
 class Project(ArkestraGenericModel, URLModelMixin):
     url_path = "projects"
-    objects = ProjectManager()
+    objects = ArkestraGenericModelManager()
     
     date = models.DateTimeField(default=datetime.now,
         help_text=_(u"Dateline for the item (the item will not be published until then"))
