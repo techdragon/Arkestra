@@ -21,9 +21,7 @@ PLUGIN_HEADING_LEVEL_DEFAULT = settings.PLUGIN_HEADING_LEVEL_DEFAULT
 DATE_FORMAT = settings.ARKESTRA_DATE_FORMAT
 
 class ProjectManager(ArkestraGenericModelManager):
-    def get_items(self, instance):
-        # hejsan: at present, get_items returns everything; later we will add logic to select projects
-        return self.model.objects.all()
+    pass
 
 class Project(ArkestraGenericModel, URLModelMixin):
     url_path = "projects"
