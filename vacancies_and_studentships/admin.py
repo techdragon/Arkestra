@@ -27,6 +27,7 @@ class VacancyStudentshipForm(InputURLMixin):
     input_url = forms.CharField(max_length=255, required = False)
     
     def clean(self):
+        super(VacancyStudentshipForm, self).clean()
         # create the short_title automatically if necessary
         if not self.cleaned_data["short_title"] and self.cleaned_data.get("title"):
             if len(self.cleaned_data["title"]) > 70:
@@ -91,7 +92,7 @@ class VacancyAdmin(VacancyStudentshipAdmin):
     fieldset_vacancy = ('', {'fields': ('salary', 'job_number')})
         
     tabs = (
-            ('Basic', {'fieldsets': (fieldsets["basic"], fieldsets["host"], fieldset_vacancy, fieldsets["image"])}),
+            ('Basic', {'fieldsets': (fieldsets["basic"], fieldsets["host"], fieldset_vacancy, fieldsets["image"], fieldsets["publishing_control"],)}),
             ('Date & significance', {'fieldsets': (fieldsets["closing_date"], fieldsets["importance"])}),
             ('Body', {'fieldsets': (fieldsets["body"],)}),
             ('Where to Publish', {'fieldsets': (fieldsets["where_to_publish"],),}),
@@ -117,7 +118,7 @@ class StudentshipAdmin(VacancyStudentshipAdmin):
 
     fieldset_supervision = ('', {'fields': ('supervisors',)})
     tabs = (
-            ('Basic', {'fieldsets': (fieldsets["basic"], fieldsets["host"], fieldsets["image"])}),
+            ('Basic', {'fieldsets': (fieldsets["basic"], fieldsets["host"], fieldsets["image"], fieldsets["publishing_control"],)}),
             ('Date & significance', {'fieldsets': (fieldsets["closing_date"], fieldsets["importance"])}),
             ('Body', {'fieldsets': (fieldsets["body"],)}),
             ('Where to Publish', {'fieldsets': (fieldsets["where_to_publish"],),}),

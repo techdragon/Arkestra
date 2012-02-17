@@ -38,6 +38,8 @@ class EventManager(ArkestraGenericModelManager):
         else:
             all_events = self.model.objects.all().order_by('start_date', 'start_time')
     
+        all_events = all_events.filter(published=True, in_lists=True)
+        
         actual_events = all_events.filter(
             # if it's (not a series and not a child) - series events are excluded, children too unless:
             # the child's parent is a series and its children can be advertised

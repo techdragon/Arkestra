@@ -27,10 +27,10 @@ class ArkestraGenericModel(models.Model):
     summary = models.TextField(verbose_name="Summary",
         null=False, blank=False, 
         help_text="e.g. Cardiff man arrested in latest wave of man-on-dog violence (maximum two lines)")
-    published = models.BooleanField(default=True, verbose_name=_(u"Is published"), db_index=True,
-        help_text=_(u"Unless selected, this item will not be published"))
-    in_lists = models.BooleanField(_(u"Show in lists"), default=True, db_index=True,
-        help_text=_(u"Unless selected, this item will only be available if you know the URL"))
+    published = models.BooleanField(default=False, verbose_name=_(u"Is published"), db_index=True,
+        help_text=_(u"Select when ready to be published"))
+    in_lists = models.BooleanField(_(u"Display in lists"), default=True, db_index=True,
+        help_text=_(u"If deselected, this item will not appear in lists"))
     body = PlaceholderField('body', help_text="Not used or required for external items")    
     image = FilerImageField(null=True, blank=True)
 
@@ -156,6 +156,7 @@ class ArkestraGenericPluginOptions(models.Model):
 
 class ArkestraGenericPluginForm(object):
     def clean(self):
+        super(ArkestraGenericPluginForm, self).clean()
         if "horizontal" in self.cleaned_data["list_format"]:
             self.cleaned_data["order_by"] = "importance/date"
             self.cleaned_data["format"] = "details image"

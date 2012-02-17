@@ -12,7 +12,34 @@ class ArkestraGenericModelManager(models.Manager):
     def get_by_natural_key(self, slug):
         return self.get(slug=slug)
 
-    def get_items_ordered_by_importance_and_date(self, instance):
+    def get_items(self, instance):
+        publishable_items = self.get_publishable_items(instance)        
+        if instance.order_by == "importance/date":
+            top_items, ordinary_items = self.get_items_ordered_by_importance_and_date(instance, publishable_items)
+            return  top_items + ordinary_items
+        else:
+            return self.get_publishable_items(instance)
+
+    def get_publishable_items(self, instance):
+        # returns items that can be published, latest items first
+        publishable_items = self.get_items_for_entity(instance) \
+            .filter(date__lte = datetime.today(), published=True, in_lists=True) \
+            .order_by('-date')
+        return publishable_items
+
+    def get_items_for_entity(self, instance):
+        # returns every items item associated with this entity, 
+        # or all items items if MULTIPLE_ENTITY_MODE is False, or instance.entity is unspecified
+        if MULTIPLE_ENTITY_MODE and instance.entity:
+            items_for_entity = self.model.objects.filter(
+                Q(hosted_by=instance.entity) | Q(publish_to=instance.entity)
+                ).distinct()
+        else:
+            items_for_entity = self.model.objects.all()
+        # print "All items", all_items.count()
+        return items_for_entity
+
+    def get_items_ordered_by_importance_and_date(self, instance, publishable_items):
         ordinary_items = []
 
         # split the within-date items for this entity into two sets
@@ -69,30 +96,6 @@ class ArkestraGenericModelManager(models.Manager):
             ordinary_items.sort(key=operator.attrgetter('date'), reverse = True)
         return top_items, ordinary_items
 
-    def get_publishable_items(self, instance):
-        # returns items items that can be published, latest items first
-        publishable_items = self.get_all_items(instance) \
-            .filter(date__lte = datetime.today()) \
-            .order_by('-date')
-        return publishable_items
 
 
-    def get_all_items(self, instance):
-        # returns every items item associated with this entity, 
-        # or all items items if MULTIPLE_ENTITY_MODE is False, or instance.entity is unspecified
-        if MULTIPLE_ENTITY_MODE and instance.entity:
-            all_items = self.model.objects.filter(
-                Q(hosted_by=instance.entity) | Q(publish_to=instance.entity)
-                ).distinct()
-        else:
-            all_items = self.model.objects.all()
-        # print "All items", all_items.count()
-        return all_items
 
-    def get_items(self, instance):
-        if instance.order_by == "importance/date":
-            top_items, ordinary_items = self.get_items_ordered_by_importance_and_date(instance)
-            instance.items =  top_items + ordinary_items
-        else:
-            instance.items = self.get_publishable_items(instance)
-        return instance.items

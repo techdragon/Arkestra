@@ -44,7 +44,8 @@ class CMSProjectPlugin(ArkestraGenericPlugin, AutocompleteMixin, CMSPluginBase):
 
         this_list = {"model": Project,}
         this_list["items"] = Project.objects.get_items(instance)
-        this_list["links_to_other_items"] = self.projects_other_links 
+        this_list["links_to_other_items"] = self.projects_other_links
+        print "**", this_list["links_to_other_items"] 
         this_list["heading_text"] = instance.heading_text
         this_list["item_template"] = "arkestra/universal_plugin_list_item.html"
         # the following should *also* check this_list["links_to_other_items"] - 
