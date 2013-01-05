@@ -264,13 +264,13 @@ class GenericLinkListPlugin(CMSPlugin):
             plugin_item.save()
 
 
-class GenericLinkListPluginItem(Link):
+from adminsortable.models import Sortable
+class GenericLinkListPluginItem(Link, Sortable):
     plugin = models.ForeignKey(GenericLinkListPlugin, related_name="links_item")
     key_link = models.BooleanField(help_text="Make this item stand out (for links in lists only)")
     
-    class Meta:
+    class Meta(Sortable.Meta):  
         ordering = ['id',]
-
 
 class CarouselPlugin(CMSPlugin):
     """

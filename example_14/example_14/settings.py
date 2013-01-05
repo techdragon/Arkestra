@@ -128,7 +128,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'sekizai.context_processors.sekizai',
 
     "arkestra_utilities.context_processors.arkestra_templates",
-)
+
+    "django.core.context_processors.static",
+    )
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -191,7 +193,7 @@ INSTALLED_APPS = (
     'filer',    
     'widgetry',  
     # 'south',         
-    # 'adminsortable',
+    'adminsortable',
 
     # core Django applications
     # these should be last, so we can override their templates

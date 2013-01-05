@@ -58,7 +58,8 @@ class PluginLinkInlineForm(ObjectLinkInlineForm):
         model=GenericLinkListPluginItem
 
 
-class PluginInlineLink(admin.StackedInline):
+from adminsortable.admin import SortableStackedInline
+class PluginInlineLink(SortableStackedInline):
     extra=10
     model = GenericLinkListPluginItem
     form = PluginLinkInlineForm
