@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib import admin
 
 from cms.plugin_base import CMSPluginBase
@@ -54,6 +55,16 @@ plugin_pool.register_plugin(FocusOnPluginPublisher)
 
 # -----------------------------------------
 class PluginLinkInlineForm(ObjectLinkInlineForm):
+    manual_url = forms.CharField(max_length=255, required = False,
+        # verbose_name = "... or manual URL",
+        # help_text=u"Enter the URL of an external item that you want <strong>automatically</strong> added to the database, but first check carefully using <strong>External URL</strong> (above) to make sure it's really not there.", 
+        )
+
+    class Media:
+        js = [
+            '/static/hide.js',
+        ]
+
     class Meta:
         model=GenericLinkListPluginItem
 
@@ -65,7 +76,8 @@ class PluginInlineLink(admin.StackedInline):
     fieldsets = (
         (None, {
             'fields': (
-                'destination_content_type', 'destination_object_id',
+                'destination_content_type', 
+                ('destination_object_id', 'manual_url'),  
                 ('include_description', 'key_link',),
             ),
         }),
