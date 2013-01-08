@@ -1,0 +1,8 @@
+{% extends "admin/cms/page/plugin_change_form.html" %}
+{% block extrahead %}
+{{ block.super }}
+<script type="text/javascript" src="{{ STATIC_URL }}adminsortable/js/admin.sortable.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}adminsortable/js/jquery.effects.core.js"></script>              
+<script type="text/javascript" src="{{ STATIC_URL }}adminsortable/js/admin.sortable.stacked.inlines.js"></script>
+{% endblock %}
+

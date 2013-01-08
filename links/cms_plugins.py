@@ -60,6 +60,7 @@ class PluginLinkInlineForm(ObjectLinkInlineForm):
 
 from adminsortable.admin import SortableStackedInline
 class PluginInlineLink(SortableStackedInline):
+# class PluginInlineLink(admin.StackedInline):
     extra=10
     model = GenericLinkListPluginItem
     form = PluginLinkInlineForm
@@ -83,7 +84,7 @@ class LinksPlugin(CMSPluginBase):
     name = "Link(s)"
     render_template = "links/cms_plugins/links.html"
     text_enabled = True
-    
+    change_form_template = "admin/links/plugin_change_form.html" 
     raw_id_fields = ('image',)
     fieldsets = (
         (None, {
