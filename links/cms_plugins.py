@@ -7,9 +7,7 @@ from arkestra_utilities.output_libraries.plugin_widths import (
     get_placeholder_width, get_plugin_ancestry, calculate_container_width)
 
 from links.admin import ObjectLinkInlineForm
-from links.models import (GenericLinkListPlugin, GenericLinkListPluginItem, 
-    CarouselPlugin, CarouselPluginItem, FocusOnPluginEditor, 
-    FocusOnPluginItemEditor)
+from links.models import GenericLinkListPlugin, GenericLinkListPluginItem,  CarouselPlugin, CarouselPluginItem, FocusOnPluginEditor, FocusOnPluginItemEditor, BogusModel
 
   
 class FocusOnInlineForm(ObjectLinkInlineForm):
@@ -58,8 +56,10 @@ class PluginLinkInlineForm(ObjectLinkInlineForm):
         model=GenericLinkListPluginItem
 
 
-class PluginInlineLink(admin.StackedInline):
-    extra=10
+from adminsortable.admin import SortableStackedInline
+class PluginInlineLink(SortableStackedInline):
+# class PluginInlineLink(admin.StackedInline):  
+    extra=2
     model = GenericLinkListPluginItem
     form = PluginLinkInlineForm
     fieldsets = (
@@ -77,10 +77,18 @@ class PluginInlineLink(admin.StackedInline):
     )
 
 
-class LinksPlugin(CMSPluginBase):
+from adminsortable.admin import SortableAdmin    
+
+class BogusModelAdmin(SortableAdmin):
+    pass
+    
+admin.site.register(BogusModel, BogusModelAdmin)   
+
+class LinksPlugin(CMSPluginBase, SortableAdmin):
     model = GenericLinkListPlugin
     name = "Link(s)"
     render_template = "links/cms_plugins/links.html"
+    change_form_template = "admin/links/plugin_change_form.html"
     text_enabled = True
     
     raw_id_fields = ('image',)

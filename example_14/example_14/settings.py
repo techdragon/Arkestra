@@ -159,6 +159,7 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
 
+     
      # Django CMS applications
     
     'arkestra_utilities',
@@ -205,6 +206,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.humanize',
+
+     'adminsortable',
 )
 
 # A sample logging configuration. The only tangible logging

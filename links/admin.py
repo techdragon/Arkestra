@@ -24,7 +24,7 @@ class ObjectLinkInlineForm(forms.ModelForm):
     class Meta:
         model=ObjectLink
         
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs): 
         super(ObjectLinkInlineForm, self).__init__(*args, **kwargs)
         if self.instance.pk is not None:
             if self.instance.destination_content_type:
@@ -33,7 +33,7 @@ class ObjectLinkInlineForm(forms.ModelForm):
             destination_content_type = None
         #self.fields['destination_object_id'].widget = GenericForeignKeySearchInput(LINK_SCHEMA, 'id_%s-destination_content_type' % self.prefix, destination_content_type)
         self.fields['destination_object_id'].widget = fk_lookup.GenericFkLookup('id_%s-destination_content_type' % self.prefix, destination_content_type)
-        self.fields['destination_content_type'].widget.choices = schema.content_type_choices()
+        self.fields['destination_content_type'].widget.choices = schema.content_type_choices() 
 
 
 class ObjectLinkAdmin(admin.ModelAdmin):
