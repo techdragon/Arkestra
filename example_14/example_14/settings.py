@@ -160,8 +160,6 @@ TEMPLATE_DIRS = (
 INSTALLED_APPS = (
 
      # Django CMS applications
-    
-    'arkestra_utilities',
     'cms',
     'menus',
     # 'appmedia',
@@ -171,6 +169,7 @@ INSTALLED_APPS = (
     # 'djcelery',     # will need to be enabled for celery processing
     
     # Arkestra applications
+    'arkestra_utilities',
     
     'contacts_and_people',
     'vacancies_and_studentships',
@@ -205,6 +204,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.humanize',
+    # 'admin_jqueryui',
+    'inline_ordering',
 )
 
 # A sample logging configuration. The only tangible logging

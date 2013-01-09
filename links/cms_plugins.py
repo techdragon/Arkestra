@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
+from cms.utils import cms_static_url
 
 from arkestra_utilities.output_libraries.plugin_widths import (
     get_placeholder_width, get_plugin_ancestry, calculate_container_width)
@@ -58,7 +59,14 @@ class PluginLinkInlineForm(ObjectLinkInlineForm):
         model=GenericLinkListPluginItem
 
 
-class PluginInlineLink(admin.StackedInline):
+from inline_ordering.admin import OrderableStackedInline
+class PluginInlineLink(OrderableStackedInline):
+    # class Media:
+    #     js = [
+    #         '/static/admin_jqueryui.min.js', 
+    #         cms_static_url('js/libs/jquery.ui.core.js'),
+    #         cms_static_url('js/libs/jquery.ui.sortable.js'),
+    #         ]
     extra=10
     model = GenericLinkListPluginItem
     form = PluginLinkInlineForm
@@ -81,6 +89,7 @@ class LinksPlugin(CMSPluginBase):
     model = GenericLinkListPlugin
     name = "Link(s)"
     render_template = "links/cms_plugins/links.html"
+    # change_form_template = "admin/links/plugin/links_plugin_change.html"
     text_enabled = True
     
     raw_id_fields = ('image',)

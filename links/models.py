@@ -264,7 +264,8 @@ class GenericLinkListPlugin(CMSPlugin):
             plugin_item.save()
 
 
-class GenericLinkListPluginItem(Link):
+from inline_ordering.models import Orderable
+class GenericLinkListPluginItem(Link, Orderable):
     plugin = models.ForeignKey(GenericLinkListPlugin, related_name="links_item")
     key_link = models.BooleanField(help_text="Make this item stand out (for links in lists only)")
     
