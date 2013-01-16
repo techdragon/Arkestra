@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 
 from widgetry.tabs.placeholderadmin import ModelAdminWithTabsAndCMSPlaceholder
 
-from arkestra_utilities.admin_mixins import GenericModelAdminMixin, InputURLMixin, fieldsets
+from arkestra_utilities.admin_mixins import GenericModelAdmin, InputURLMixin, fieldsets
 
 from links.admin import ExternalLinkForm, get_or_create_external_link
 from links.admin import ObjectLinkInline
@@ -51,7 +51,7 @@ class NewsAndEventsForm(InputURLMixin):
 
 from contacts_and_people.models import Entity
 
-class NewsAndEventsAdmin(GenericModelAdminMixin, ModelAdminWithTabsAndCMSPlaceholder):
+class NewsAndEventsAdmin(GenericModelAdmin):
     exclude = ('content', 'url')
     search_fields = ['title',]
     list_display = ('short_title', 'date', 'hosted_by',)

@@ -5,61 +5,50 @@ from django import forms
 from django.db.models import ForeignKey
 from django.contrib import admin, messages
 from django.contrib.contenttypes import generic
+from django.forms import ModelForm
 
 from widgetry import fk_lookup
 from widgetry.views import search 
 
-from arkestra_utilities.admin_mixins import AutocompleteMixin, SupplyRequestMixin
+from arkestra_utilities.admin_mixins import AutocompleteMixin, SupplyRequestMixin, InputURLMixin
 
 from links.models import ObjectLink, ExternalLink, ExternalSite, LinkType
 from links import schema
-
-#LINK_SCHEMA = getattr(settings, 'LINK_SCHEMA', {})
 
 class LinkAdmin(admin.ModelAdmin, AutocompleteMixin):        
     related_search_fields = ['destination_content_type']
 
 
-class ObjectLinkInlineForm(forms.ModelForm):
-    class Meta:
-        model=ObjectLink
-        
-    input_url = forms.CharField(max_length=255, required = False,
-        )
-
+class LinkItemForm(ModelForm):
+    """
+    
+    """    
     def __init__(self, *args, **kwargs):
-        super(ObjectLinkInlineForm, self).__init__(*args, **kwargs)
+        super(LinkItemForm, self).__init__(*args, **kwargs)
         if self.instance.pk is not None:
             if self.instance.destination_content_type:
                 destination_content_type = self.instance.destination_content_type.model_class()
         else:
             destination_content_type = None
-        #self.fields['destination_object_id'].widget = GenericForeignKeySearchInput(LINK_SCHEMA, 'id_%s-destination_content_type' % self.prefix, destination_content_type)
         self.fields['destination_object_id'].widget = fk_lookup.GenericFkLookup('id_%s-destination_content_type' % self.prefix, destination_content_type)
         self.fields['destination_content_type'].widget.choices = schema.content_type_choices()
 
-
-class ObjectLinkAdmin(admin.ModelAdmin):
-    fieldsets = (
-        (None, {
-            'fields': ('destination_content_type', 'destination_object_id',),
-            }),
-        ('Additional options', {
-            'fields': ('text_override', 'description_override', 'html_title_attribute',), 
-            'classes': ('collapse',),
-            }),
+    external_link_input_url = forms.CharField(max_length=255, required = False,
+        help_text=u"<strong>External URL</strong> not found above? Enter a new one.", 
         )
+
 
 
 class ObjectLinkInline(generic.GenericStackedInline):
     model = ObjectLink
-    form = ObjectLinkInlineForm
+    form = LinkItemForm
     extra = 3
     fieldsets = (
         (None, {
             'fields': (
                 'destination_content_type', 'destination_object_id',
-                ('include_description'),
+                'external_link_input_url',
+                ('include_description', 'key_link',),
             ),
         }),
         ('Overrides', {
@@ -224,7 +213,6 @@ class ExternalSiteAdmin(admin.ModelAdmin):
         return super(ExternalSiteAdmin, self).changelist_view(request, extra_context)
 
     
-#admin.site.register(ObjectLink, ObjectLinkAdmin)
 admin.site.register(ExternalLink, ExternalLinkAdmin)
 admin.site.register(ExternalSite, ExternalSiteAdmin)
 admin.site.register(LinkType, LinkTypeAdmin)

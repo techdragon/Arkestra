@@ -1,9 +1,8 @@
-{% extends "admin/cms/page/plugin_change_form.html" %}
+{% extends  "admin/tabbed_change_form.html" %}
 
 {% block extrahead %}
 
 {{ block.super }}  
-
 <script type='text/javascript'>
 //<![CDATA[
 $(document).ready(function () {
@@ -11,7 +10,7 @@ $(document).ready(function () {
 });
 $(document).ready(function () {
 
-  $('select[id|="id_links_item"]').on('change', function () {
+  $('select[id|="id_links-objectlink"]').on('change', function () {
     var $this = $(this),
       val = $this.val();
     if (val == "{{ external_link_model_id }}") {

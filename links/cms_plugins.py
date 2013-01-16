@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.contenttypes.models import ContentType
 
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
@@ -6,68 +7,22 @@ from cms.plugin_pool import plugin_pool
 from arkestra_utilities.output_libraries.plugin_widths import (
     get_placeholder_width, get_plugin_ancestry, calculate_container_width)
 
-from links.admin import ObjectLinkInlineForm
+from links.admin import LinkItemForm
 from links.models import (GenericLinkListPlugin, GenericLinkListPluginItem, 
     CarouselPlugin, CarouselPluginItem, FocusOnPluginEditor, 
-    FocusOnPluginItemEditor)
+    FocusOnPluginItemEditor, ExternalLink)
 
   
-class FocusOnInlineForm(ObjectLinkInlineForm):
-    class Meta:
-        model=FocusOnPluginItemEditor
-
-class FocusOnInlineItemAdmin(admin.StackedInline):
-    model = FocusOnPluginItemEditor
-    form = FocusOnInlineForm
-    fieldsets = (
-        (None, {
-            'fields': (
-                'destination_content_type', 'destination_object_id',
-            ),
-        }),
-        ('Overrides', {
-            'fields': ('short_text_override', 'text_override','description_override', 'image_override',
-            ),
-            'classes': ('collapse',),
-        })
-    )
-
-class FocusOnPluginPublisher(CMSPluginBase):
-    model = FocusOnPluginEditor
-    name = "FocusOn"
-    render_template = "links/cms_plugins/focuson.html"
-    text_enabled = True
-    inlines = (FocusOnInlineItemAdmin,)
-    def icon_src(self, instance):
-        return "/static/plugin_icons/focus_on.png"
-    
-    def render(self, context, instance, placeholder):
-        focuson = instance.focuson_item.order_by('?')[0]
-        focuson.heading_level = instance.heading_level
-        context.update({
-            'focuson':focuson,
-            'placeholder':placeholder,
-            })
-        return context
-
-plugin_pool.register_plugin(FocusOnPluginPublisher)
-
 # -----------------------------------------
-class PluginLinkInlineForm(ObjectLinkInlineForm):
-    class Meta:
-        model=GenericLinkListPluginItem
-
-
-
 class PluginInlineLink(admin.StackedInline):
-    extra=10
     model = GenericLinkListPluginItem
-    form = PluginLinkInlineForm
+    form = LinkItemForm
+    extra=3
     fieldsets = (
         (None, {
             'fields': (
                 'destination_content_type', 'destination_object_id',
-                'input_url',
+                'external_link_input_url',
                 ('include_description', 'key_link',),
             ),
         }),
@@ -116,20 +71,58 @@ class LinksPlugin(CMSPluginBase):
             'placeholder':placeholder,
             'separator': instance.separator
         })
-        return context
+        return context 
+        
+
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['external_link_model_id'] = ContentType.objects.get_for_model(ExternalLink).id
+        return super(LinksPlugin, self).change_view(request, object_id,
+            form_url, extra_context=extra_context)
+
 plugin_pool.register_plugin(LinksPlugin)
 
 
-class PluginCarouselItemForm(ObjectLinkInlineForm):
-    """
-    """
-    class Meta:
-        model=CarouselPluginItem
+class FocusOnInlineItemAdmin(admin.StackedInline):
+    model = FocusOnPluginItemEditor
+    form = LinkItemForm
+    fieldsets = (
+        (None, {
+            'fields': (
+                'destination_content_type', 'destination_object_id',
+            ),
+        }),
+        ('Overrides', {
+            'fields': ('short_text_override', 'text_override','description_override', 'image_override',
+            ),
+            'classes': ('collapse',),
+        })
+    )
+
+class FocusOnPluginPublisher(CMSPluginBase):
+    model = FocusOnPluginEditor
+    name = "FocusOn"
+    render_template = "links/cms_plugins/focuson.html"
+    text_enabled = True
+    inlines = (FocusOnInlineItemAdmin,)
+    def icon_src(self, instance):
+        return "/static/plugin_icons/focus_on.png"
+    
+    def render(self, context, instance, placeholder):
+        focuson = instance.focuson_item.order_by('?')[0]
+        focuson.heading_level = instance.heading_level
+        context.update({
+            'focuson':focuson,
+            'placeholder':placeholder,
+            })
+        return context
+
+plugin_pool.register_plugin(FocusOnPluginPublisher)
 
 
 class PluginInlineCarousel(admin.StackedInline):
     model = CarouselPluginItem
-    form = PluginCarouselItemForm
+    form = LinkItemForm
     extra=3
     max_num=5
     fieldsets = (
