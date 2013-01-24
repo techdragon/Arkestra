@@ -145,9 +145,11 @@ class GenericLinkListPluginItem(Link):
     Similar to ObjectLink above, but this one isn't attached to an object such as a NewsArticle, but to a plugin.
     """
     plugin = models.ForeignKey("GenericLinkListPlugin", related_name="links_item")
+    order = models.IntegerField(blank = True, null = True, default = 0)
     
     class Meta:
-        ordering = ['id',]
+        ordering = ['order', 'id']
+        verbose_name = "Link"
 
 
 """

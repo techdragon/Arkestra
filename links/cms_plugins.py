@@ -18,16 +18,22 @@ from links.models import (GenericLinkListPlugin, GenericLinkListPluginItem,
 class PluginInlineLink(SupplyRequestMixin, admin.StackedInline):
     model = GenericLinkListPluginItem
     form = LinkItemForm
-    extra=3
+    extra=1
     fieldsets = (
         (None, {
             'fields': (
-                'destination_content_type', 'destination_object_id',
+                'order',
+                ('destination_content_type', 'destination_object_id',),
+            ),
+        }),
+        ("Basic options", {
+            'fields': (
                 'text_override',
                 ('include_description', 'key_link',),
             ),
+            'classes': ('collapse',),
         }),
-        ('Overrides', {
+        ('Advanced options', {
             'fields': ('metadata_override', 'heading_override', 'description_override', 'html_title_attribute',
             ),
             'classes': ('collapse',),
@@ -40,6 +46,7 @@ class LinksPlugin(CMSPluginBase):
     name = "Link(s)"
     render_template = "links/cms_plugins/links.html"
     text_enabled = True
+    change_form_template = "admin/links/links_plugin_change_form.html"
     
     raw_id_fields = ('image',)
     fieldsets = (

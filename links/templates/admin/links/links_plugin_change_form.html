@@ -1,0 +1,20 @@
+{% extends "admin/cms/page/plugin_change_form.html" %}
+
+{% block jquery %}
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<script src="/static/jquery/inline_ordering.js"></script>
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/base/jquery-ui.css" />
+
+<!-- <script type="text/javascript">
+$(document).ready(function () {
+  $('span.fkautocomplete_widget input').each(function () {
+	alert(this.id);
+    });
+});
+</script> -->
+
+{% endblock %}
