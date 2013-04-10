@@ -1,13 +1,11 @@
-# Django settings for example_14 project.
+# Django settings for example project.
 
 import os.path
 
-# Make it work straight from the checkout!
-import sys
-sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
-
 # set the BASE_PATH for convenience's sake
 BASE_PATH = os.path.normpath(os.path.dirname(__file__))
+
+gettext = lambda s: s
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -267,7 +265,7 @@ FILER_FILE_MODELS = (
 
 # ------------------------ Django CMS
 
-gettext = lambda s: s
+
 
 CMS_SOFTROOT = True
 CMS_PERMISSION = True
