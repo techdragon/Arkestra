@@ -1,3 +1,6 @@
+ul li   {list-style: square;}
+ol li   {list-style: decimal;}
+
 /* lists */	
 
 /* we really need to fix some of these styles. the idea of a div.plugin ul li is quite out of date now and a nuisance */
