@@ -1,0 +1,21 @@
+{% load pagination_tags %}
+
+{% autopaginate newsarticles 20 %}
+
+<form action="" method="GET">
+    <input type=submit name="searchbtn" value="Search">
+    {{ newsarticlesfilter }}
+</form>
+
+{% paginate %}
+                                                   
+{% for newsarticle in newsarticles %}
+  <div class="resource">
+    <h2>{{ newsarticle.title }}</h2>
+    <div><b>Please contact:</b>
+    {% for person in newsarticle.please_contact.all %}
+      {{ person }}{% if not forloop.last %},{% endif %}
+    {% endfor %}
+    <br><b>Published by:</b> {{ newsarticle.hosted_by }}</div>
+  </div>
+{% endfor %}

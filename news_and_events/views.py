@@ -186,3 +186,110 @@ def event(request, slug):
         },
         RequestContext(request),
         )
+        
+from django_easyfilters import FilterSet
+from django_easyfilters.filters import ValuesFilter, DateTimeFilter, ForeignKeyFilter, TextSearchModifier, Modifier
+
+class PublishedByFilter(ForeignKeyFilter):
+    pass
+        
+class NewsArticleFilterSet(FilterSet):
+    fields = [
+        (
+            'hosted_by', 
+            {
+                "modifier": TextSearchModifier(
+                    search_key="hosted_by__name__contains",
+                ), 
+            }
+        ),
+        (
+            'title', 
+            {
+                "modifier": TextSearchModifier(
+                    search_key="title__contains",
+                )    
+            }
+        ),
+        'date',  
+        ]
+
+    title_fields = []
+
+
+def django_easy_filter(request):
+    newsarticles = NewsArticle.objects.published_items()
+
+
+
+    newsarticlesfilter = NewsArticleFilterSet(newsarticles, request.GET)
+    
+    
+    entity = Entity.objects.base_entity()
+    
+    meta = {"description": "Archive of news items",}
+    title = u"News archive filter demo"
+    pagetitle = u"News archive filter demo"
+    main_page_body_file = "news_and_events/django_easy_filter.html"
+
+    request.auto_page_url = request.path
+    # request.path = entity.get_website.get_absolute_url() # for the menu, so it knows where we are
+    request.current_page = entity.get_website
+
+    context = RequestContext(request)
+    context.update({
+        "entity":entity,
+        "title": title,
+        "meta": meta,
+        "pagetitle": pagetitle,
+        "main_page_body_file": main_page_body_file,
+        'newsarticles': newsarticlesfilter.qs,
+        'newsarticlesfilter': newsarticlesfilter,
+        # 'searchterms': searchterms,
+        }
+        )
+
+
+    return render_to_response(
+        "contacts_and_people/arkestra_page.html", context)
+
+import django_filters     
+
+class NewsArticleFilterDF(django_filters.FilterSet):
+    class Meta:
+        model = NewsArticle
+        fields = [
+            'title', 
+            # 'summary', 
+            # 'hosted_by', 
+            # 'date', 
+            ]
+
+def django_filter(request):
+    f = NewsArticleFilterDF(request.GET, queryset=NewsArticle.objects.published_items())
+    
+    entity = Entity.objects.base_entity()
+    
+    meta = {"description": "Archive of news items",}
+    title = u"News archive filter demo"
+    pagetitle = u"News archive filter demo"
+    main_page_body_file = "news_and_events/django_filter.html"
+    
+    request.auto_page_url = request.path
+    # request.path = entity.get_website.get_absolute_url() # for the menu, so it knows where we are
+    request.current_page = entity.get_website
+
+    context = RequestContext(request)
+    context.update({
+        "entity":entity,
+        "title": title,
+        "meta": meta,
+        "pagetitle": pagetitle,
+        "main_page_body_file": main_page_body_file,
+        'filter': f,
+        }
+        )
+
+    return render_to_response(
+        "contacts_and_people/arkestra_page.html", context)
+

@@ -12,7 +12,9 @@ urlpatterns = patterns('',
     url(r'^news-archive/(?:(?P<slug>[-\w]+)/)?$', views.news_archive, name="news_archive"),
     url(r'^previous-events/(?:(?P<slug>[-\w]+)/)?$', views.previous_events, name="previous_events"),
     url(r'^forthcoming-events/(?:(?P<slug>[-\w]+)/)?$', views.all_forthcoming_events, name="forthcoming_event"),
+    url(r'^news-and-events/django_easy_filter/$', views.django_easy_filter),
+    url(r'^news-and-events/django_filter/$', views.django_filter),
     url(r"^news-and-events/(?:(?P<slug>[-\w]+)/)?$", views.news_and_events, name="news_and_events"),
-    )
     #(r"^entity/(?P<slug>[-\w]+)/news/$", "news_and_events.views.news"), # in development
+    )
 
