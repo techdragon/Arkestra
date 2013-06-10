@@ -188,30 +188,38 @@ def event(request, slug):
         )
         
 from django_easyfilters import FilterSet
-from django_easyfilters.filters import ValuesFilter, DateTimeFilter, ForeignKeyFilter, TextSearchModifier, Modifier
-
-class PublishedByFilter(ForeignKeyFilter):
-    pass
+# from django_easyfilters.filters import ValuesFilter, DateTimeFilter, ForeignKeyFilter, TextSearchModifier, Modifier
+# 
+# from django_easyfilters.textsearch import  TextSearch
+# 
+# class PublishedByFilter(ForeignKeyFilter):
+#     pass
         
 class NewsArticleFilterSet(FilterSet):
     fields = [
-        (
-            'hosted_by', 
-            {
-                "modifier": TextSearchModifier(
-                    search_key="hosted_by__name__contains",
-                ), 
+        ('hosted_by', {
+            "template": "django_easyfilters/text_search.html"
             }
-        ),
-        (
-            'title', 
-            {
-                "modifier": TextSearchModifier(
-                    search_key="title__contains",
-                )    
-            }
-        ),
-        'date',  
+            ),
+    
+        # (
+        #     'hosted_by', 
+        #     {
+        #         "modifier": TextSearchModifier(
+        #             search_key="hosted_by__name__contains",
+        #         ), 
+        #     }
+        # ),
+        # (
+        #     'title', 
+        #     {
+        #         "modifier": TextSearchModifier(
+        #             search_key="title__contains",
+        #         )    
+        #     }
+        # ),
+        # 'hosted_by',  
+        # 'importance',  
         ]
 
     title_fields = []
