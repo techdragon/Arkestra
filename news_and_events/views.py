@@ -198,28 +198,24 @@ from django_easyfilters import FilterSet
 class NewsArticleFilterSet(FilterSet):
     fields = [
         ('hosted_by', {
-            "template": "django_easyfilters/text_search.html"
+            "template": "django_easyfilters/text_search.html",
+            "search_keys": ["hosted_by__name__icontains"],
+            "filter_type": "search",
+            "field_name": "Published by",
             }
             ),
-    
-        # (
-        #     'hosted_by', 
-        #     {
-        #         "modifier": TextSearchModifier(
-        #             search_key="hosted_by__name__contains",
-        #         ), 
-        #     }
-        # ),
-        # (
-        #     'title', 
-        #     {
-        #         "modifier": TextSearchModifier(
-        #             search_key="title__contains",
-        #         )    
-        #     }
-        # ),
-        # 'hosted_by',  
-        # 'importance',  
+        ('title', {
+            "template": "django_easyfilters/text_search.html",
+            "search_keys": [
+                "title__icontains", 
+                "summary__icontains",
+                ],    
+            "filter_type": "search",
+            "field_name": "Title/summary",
+            }
+            ),
+        'date',
+        'importance',  
         ]
 
     title_fields = []
