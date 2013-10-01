@@ -20,6 +20,10 @@ except AttributeError:
     from cms.utils import get_cms_setting
     CACHE_DURATIONS = get_cms_setting('CACHE_DURATIONS')['menus']
 
+from arkestra_utilities.navigation_pool import navigation_pool
+
+print navigation_pool.navigators
+
 for menu in ARKESTRA_MENUS:
     if menu.get("lister_name"):
         lister = __import__(

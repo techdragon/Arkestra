@@ -7,3 +7,4 @@ menu_dict = {
     "lister_module": "news_and_events.lister",
     "lister_name": "NewsAndEventsMenuLister",
     }
+
