@@ -1,4 +1,4 @@
-{% spaceless %}   
+{% spaceless %}
 {% load thumbnail %}
 {% thumbnail item.image.file item.image_size crop subject_location=item.image.subject_location as image_src %}
 
@@ -7,10 +7,11 @@
     {% if item.image_title %}<span class="imageset-item-data image-title text">{{ item.image_title }}</span>{% endif %}
 	{% if item.url and imageset.items_have_links %}<a class="link-title text" href="{{ item.url }}"><span class="title">{{ item.link_title|default:item.text }}</span> <span class="more-information">Read more...</span></a>{% endif %}
     </div>
-{% endif %}   
+{% endif %}
 
 {% if imageset.kind == "lightbox-single" %}
-	<a class="fancy" href="/arkestra-lightbox-item/{{ item.id }}/{{ lightbox_max_dimension }}/" style="width: {{ item.width }}px; min-height: {{ item.height }}px;">
+	<a class="fancybox" href="/arkestra-lightbox-item/{{ item.id }}/{{ lightbox_max_dimension }}/" style="width: {{ item.width }}px; min-height: {{ item.height }}px;">
+
         {% if forloop.first %}
    	        <span class="image-title">{{ imageset.active_items.count }} images</span>
    	        <img class="fancybox-icon" alt="{{ item.image.name }}"  src="{{ image_src.url }}" />
@@ -22,26 +23,31 @@
 {% endif %}
 
 {% if imageset.kind == "lightbox" %}
-	<a class="fancy" href="/arkestra-lightbox-item/{{ item.id }}/{{ lightbox_max_dimension }}/" style="width: {{ item.width }}px; min-height: {{ item.height }}px;">
-   	    {% if item.link_title %}<span  class="image-title">{{ item.link_title }}</span>{% endif %}
-	    <img class="fancybox-icon" alt="{{ item.image.name }}"  src="{{ image_src.url }}" />
-        <span class="link-arrow"></span>
-   	</a>
+  <!-- {% comment %} <li><a href="path/to/your/img"><img src="path/to/your/img-th"></a></li> {% endcomment %} -->
+  <a class="" rel="" href="{{ item.image.url }}" style="width: {{ item.width }}px; min-height: {{ item.height }}px;">
+  <img data-caption="{{ item.link_title }}" src="{{ image_src.url }}"></a>
+  {% comment %} this section below is the old fancybox based lightbox {% endcomment %}
+  {% comment %} <!-- <a class="fancybox" rel="fancybox" href="/arkestra-lightbox-item/{{ item.id }}/{{ lightbox_max_dimension }}/" style="width: {{ item.width }}px; min-height: {{ item.height }}px;"> -->
+	<a class="fancybox" rel="fancybox" href="{{ image_src.url }}" style="width: {{ item.width }}px; min-height: {{ item.height }}px;">
+    {% if item.link_title %}<!-- <span  class="image-title">{{ item.link_title }}</span> -->{% endif %}
+    <img class="fancybox-icon" alt="{{ item.image.name }}"  src="{{ image_src.url }}" />
+    <span class="link-arrow"></span>
+ 	</a> {% endcomment %}
 {% endif %}
 
 {% if imageset.kind == "basic" or imageset.kind == "multiple" %}
     <a {% if imageset.items_have_links %}href="{{ item.url }}"{% endif %} style="width: {{ item.width }}px; min-height: {{ item.height }}px;">
-	
+
     	<img alt="{{ item.alt }}" class="plugin" src="{{ image_src.url }}" />
-	
+
     	{% if item.image_title %}<span class="imageset-item-data image-title text">{{ item.image_title }}</span>{% endif %}
     	{% if item.image_caption %}<span class="imageset-item-data image-caption text">{{ item.image_caption }}</span>{% endif %}
 
     	{% if item.link_title %}<span class="link-title text">{{ item.link_title }}</span>{% endif %}
     	{% if item.link_description %}<span class="link-description text">{{ item.link_description }}</span>{% endif %}
-	
+
     	{% if item.show_author %}<span class="image_author text">(Author: {{ item.image.author }})</span>{% endif %}
-	    
+
     	{% if imageset.items_have_links %}
     	    {% if item.link_title or item.link_description %}
     	        <span class="hide">{{ item.link_title|default:item.text }}</span>
@@ -51,4 +57,4 @@
     </a>
 {% endif %}
 
-{% endspaceless %}      
+{% endspaceless %}

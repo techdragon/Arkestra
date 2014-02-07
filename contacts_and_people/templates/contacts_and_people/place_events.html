@@ -1,5 +1,6 @@
 {% extends "contacts_and_people/place.html" %}{% load thumbnail news_and_events_tags typogrify_tags %}
 
 	{% block place_information %}
-		{% with place.events as everything %}{% include "arkestra/universal_plugin_lister.html" %}{% endwith %}
+		<pre style='display:none;'>rendered place_events.html</pre>
+    {% with place.events as everything %}{% include "arkestra/universal_plugin_lister.html" %}{% endwith %}
 	{% endblock place_information %}

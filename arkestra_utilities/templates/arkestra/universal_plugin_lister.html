@@ -1,10 +1,11 @@
 {% if everything.lists %}
     {% load placeholder_tags %}
+    <pre style='display:none;'>rendered universal_plugin_lister.html</pre>
     <div class="{{ everything.row_class }} {{ everything.type }}">
-    	{% render_placeholder intro_page_placeholder %} 
+    	{% render_placeholder intro_page_placeholder %}
     	{% for list in everything.lists %}
     		{% if list.items or list.other_items %}
-		
+
     			{% include "arkestra/universal_date_index.html" %}
     			<div class = "{{ list.div_class }}">
     				{% if everything.heading_level %}
