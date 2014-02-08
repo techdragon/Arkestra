@@ -1,5 +1,5 @@
 {% load sekizai_tags thumbnail %}
-<ul id="slider{{ imageset.id }}" class="imageset slider" data-orbit>
+<ul id="slider{{ imageset.id }}" class="imageset slider" data-orbit data-options="animation_speed:7500;">
 	{% for item in imageset.items %}
     	<li id="imageset-item-{{ imageset.id }}-{{ item.id }}">{% include "arkestra_image_plugin/includes/foundation_imageset_item.html" %}</li>
 	{% endfor %}
@@ -7,62 +7,8 @@
 
 
 {% addtoblock "css" %}
-<!-- AnythingSlider -->
-<link rel="stylesheet" href="{{ STATIC_URL }}slider/css/anythingslider.css">
-<link rel="stylesheet" href="{{ STATIC_URL }}slider/css/theme-minimalist-square.css">
-<link rel="stylesheet" href="{{ STATIC_URL }}slider/css/arkestra-slider.css">
-<style>
-	#slider{{ imageset.id }} {
-	width: {{ imageset.size.0 }}px;
-	height: {{ imageset.size.1 }}px;
-	list-style: none;
-	/* Prevent FOUC (see FAQ page) and keep things readable if javascript is disabled */
-	overflow-y: auto;
-	overflow-x: hidden;
-}
-	#slider{{ imageset.id }} li .image img {
 
-	width: {{ imageset.size.0 }}px;
-	height: {{ imageset.size.1 }}px;
-}
-div.anythingSlider-minimalist-square {
-	padding: 0;
-}
-div.anythingSlider-minimalist-square .anythingWindow {
-	border: none;
-}
-div.anythingSlider-minimalist-square.activeSlider .anythingWindow {
-	border-color: red;
-}
-div.anythingSlider-minimalist-square.activeSlider .anythingControls ul a {
-	background-color: gray;
-}
-
-</style>
 {% endaddtoblock %}
 
 {% addtoblock "js" %}
-	<script src="{{ STATIC_URL }}jquery/jquery.min.js"></script>
-	<script src="{{ STATIC_URL }}slider/js/jquery.easing.1.2.js"></script>
-	<script src="{{ STATIC_URL }}slider/js/jquery.anythingslider.min.js"></script>
-        <!-- Anything Slider setup -->
-        <script>
-		// Set up Sliders
-		// **************
-		$(document).ready(function(){
-			$('#slider{{ imageset.id }}').anythingSlider({
-				theme: "minimalist-square",
-				hashTags : false,
-				toggleArrows: true,
-				toggleControls: false,
-				autoPlay: true,
-				autoPlayLocked : true,
-				buildStartStop: false,
-				delay: {{ slider_delay|default:"4000" }},
-				expand: false,
-				resizeContents: true,
-				resumeDelay : 8000
-			});
-		});
-	</script>
 {% endaddtoblock %}

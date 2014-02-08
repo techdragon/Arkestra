@@ -1,0 +1,19 @@
+{% load sekizai_tags thumbnail %}
+<ul id="slider{{ imageset.id }}" class="imageset slider" data-orbit data-options="animation_speed:7500;">
+	{% for item in imageset.items %}
+    	<li id="imageset-item-{{ imageset.id }}-{{ item.id }}">
+        <div style="display: table;">
+          <div style="display: table-cell; vertical-align: middle;">
+            {% include "arkestra_image_plugin/includes/foundation_imageset_item.html" %}
+          </div>
+        </div>
+      </li>
+	{% endfor %}
+</ul>
+
+
+{% addtoblock "css" %}
+{% endaddtoblock %}
+
+{% addtoblock "js" %}
+{% endaddtoblock %}

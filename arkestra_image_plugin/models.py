@@ -111,9 +111,11 @@ class ImageSetPlugin(CMSPlugin, ImageSetTypePluginMixin):
         ("lightbox", "Lightbox with gallery"),
         ("lightbox-single", "Lightbox without gallery"),
         ("slider", "Slider"),
+        ("slider-auto-center", "Slider with Automatic Centering"),
         ("block-grid", "Images in a Block Grid"),
         )
-    kind = models.CharField(choices = IMAGESET_KINDS, max_length = 50, default = "basic")
+    kind = models.CharField(choices = IMAGESET_KINDS, max_length = 50, default = "basic",
+        help_text = "If selecting Block Grid, please expand the next section and select the number of items per row.")
     IMAGE_WIDTHS = (
         (1000.0, u"Automatic"),
         (u'Relative to column', (
