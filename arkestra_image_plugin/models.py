@@ -111,6 +111,7 @@ class ImageSetPlugin(CMSPlugin, ImageSetTypePluginMixin):
         ("lightbox", "Lightbox with gallery"),
         ("lightbox-single", "Lightbox without gallery"),
         ("slider", "Slider"),
+        ("block-grid", "Images in a Block Grid"),
         )
     kind = models.CharField(choices = IMAGESET_KINDS, max_length = 50, default = "basic")
     IMAGE_WIDTHS = (
@@ -161,7 +162,7 @@ class ImageSetPlugin(CMSPlugin, ImageSetTypePluginMixin):
                      )
     float = models.CharField(_("float"), max_length=10, blank=True, null=True, choices=FLOAT_CHOICES)
     items_per_row = models.PositiveSmallIntegerField(blank = True, null = True,
-        help_text = "Only applies to gallery-type plugins")
+        help_text = "Applies to gallery-type plugins and Block Grids")
 
     @property
     def items_have_links(self):
@@ -182,6 +183,7 @@ class ImageSetPlugin(CMSPlugin, ImageSetTypePluginMixin):
             return "slider"
         # multiple_images() prepares a gallery of images
         elif self.kind == "lightbox" or \
+            self.kind == "block-grid" or \
             (self.kind == "multiple" and self.active_items.count() > 1):
             self.template = "arkestra_image_plugin/%s.html" %self.kind
             return "multiple_images"

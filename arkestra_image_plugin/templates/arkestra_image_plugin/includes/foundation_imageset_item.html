@@ -2,11 +2,6 @@
 {% load thumbnail %}
 {% thumbnail item.image.file item.image_size crop subject_location=item.image.subject_location as image_src %}
 
-{% if imageset.kind == "slider" %}
-  <img class="plugin" src="{{ image_src.url }}" alt="{% if item.link_title %}{{ item.alt }}{% endif %}" />
-  {% if item.image_title %}<div class="orbit-caption">{{ item.image_title }}</div>{% endif %}
-{% endif %}
-
 {% if imageset.kind == "lightbox-single" %}
 	<a class="" rel="" href="{{ item.image.url }}" style="width: {{ item.width }}px; min-height: {{ item.height }}px;">
     {% if forloop.first %}
@@ -18,6 +13,18 @@
 {% if imageset.kind == "lightbox" %}
   <a class="" rel="" href="{{ item.image.url }}" style="width: {{ item.width }}px; min-height: {{ item.height }}px;">
   <img data-caption="{{ item.link_title }}" src="{{ image_src.url }}"></a>
+{% endif %}
+
+{% if imageset.kind == "slider" %}
+  <img class="plugin" src="{{ image_src.url }}" alt="{% if item.link_title %}{{ item.alt }}{% endif %}" />
+  {% if item.image_title %}<div class="orbit-caption">{{ item.image_title }}</div>{% endif %}
+{% endif %}
+
+{% if imageset.kind == "block-grid" %}
+  <img class="plugin" src="{{ image_src.url }}" alt="{% if item.link_title %}{{ item.alt }}{% endif %}" />
+  {% comment %}
+  {% if item.image_title %}<div class="orbit-caption">{{ item.image_title }}</div>{% endif %}
+  {% endcomment %}
 {% endif %}
 
 {% if imageset.kind == "basic" or imageset.kind == "multiple" %}
