@@ -20,6 +20,11 @@
   {% if item.image_title %}<div class="orbit-caption">{{ item.image_title }}</div>{% endif %}
 {% endif %}
 
+{% if imageset.kind == "slider-auto-center" %}
+  <img class="plugin" src="{{ image_src.url }}" alt="{% if item.link_title %}{{ item.alt }}{% endif %}" />
+  {% if item.image_title %}<div class="orbit-caption">{{ item.image_title }}</div>{% endif %}
+{% endif %}
+
 {% if imageset.kind == "block-grid" %}
   <img class="plugin" src="{{ image_src.url }}" alt="{% if item.link_title %}{{ item.alt }}{% endif %}" />
   {% comment %}
