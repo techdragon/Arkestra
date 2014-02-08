@@ -9,6 +9,13 @@
     </div>
 {% endif %}
 
+{% if imageset.kind == "slider-auto-center" %}
+    <div><img alt="{% if item.link_title %}{{ item.alt }}{% endif %}" class="plugin" src="{{ image_src.url }}" />
+    {% if item.image_title %}<span class="imageset-item-data image-title text">{{ item.image_title }}</span>{% endif %}
+  {% if item.url and imageset.items_have_links %}<a class="link-title text" href="{{ item.url }}"><span class="title">{{ item.link_title|default:item.text }}</span> <span class="more-information">Read more...</span></a>{% endif %}
+    </div>
+{% endif %}
+
 {% if imageset.kind == "lightbox-single" %}
 	<a class="fancybox" href="/arkestra-lightbox-item/{{ item.id }}/{{ lightbox_max_dimension }}/" style="width: {{ item.width }}px; min-height: {{ item.height }}px;">
 
