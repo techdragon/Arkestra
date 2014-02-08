@@ -1,4 +1,4 @@
-from models import Vacancy, Studentship
+from models import Vacancy, Studentship, Lesson
 
 class VacancyStudentshipPluginMixin(object):
     def other_links(self, instance, this_list):
@@ -7,37 +7,37 @@ class VacancyStudentshipPluginMixin(object):
         #     all_items_count = len(this_list["items"])
         #     if instance.limit_to and all_items_count > instance.limit_to:
         #         this_list["other_items"] = [{
-        #             "link":instance.entity.get_related_info_page_url("news-archive"), 
+        #             "link":instance.entity.get_related_info_page_url("news-archive"),
         #             "title":"news archive",
         #             "count": all_items_count,}]
         return this_list
-            
+
     def events_style_other_links(self, instance, this_list):
-        kind = this_list["heading_text"].lower()    
+        kind = this_list["heading_text"].lower()
         this_list["other_items"] = []
         if instance.view == "current":
             if instance.previous_items or instance.forthcoming_items:
                 if instance.limit_to and len(instance.items) > instance.limit_to:
                     if instance.forthcoming_items.count() > instance.limit_to:
                         this_list["other_items"].append({
-                            "link":instance.entity.get_related_info_page_url("all-open-%s" %kind), 
-                            "title":"All open %s" %kind,  
+                            "link":instance.entity.get_related_info_page_url("all-open-%s" %kind),
+                            "title":"All open %s" %kind,
                             "count": instance.forthcoming_items.count(),}
                             )
             if instance.previous_items:
                 this_list["other_items"].append({
-                    "link":instance.entity.get_related_info_page_url("archived-%s" %kind), 
+                    "link":instance.entity.get_related_info_page_url("archived-%s" %kind),
                     "title":"Archived %s" %kind,
                     "count": instance.previous_items.count(),}
-                    )    
-                
+                    )
+
         elif instance.view == "archive":
-                
+
             if instance.forthcoming_items:
                 this_list["other_items"] = [{
-                    "link":instance.entity.get_related_info_page_url("current-%s" %kind), 
-                    "title":"All open %s" %kind,  
-                    "count": instance.forthcoming_items.count(),}]                
+                    "link":instance.entity.get_related_info_page_url("current-%s" %kind),
+                    "title":"All open %s" %kind,
+                    "count": instance.forthcoming_items.count(),}]
         return this_list
 
     def get_items(self, instance):
@@ -58,5 +58,14 @@ class VacancyStudentshipPluginMixin(object):
             # this_list["other_items"] = []
             this_list["links_to_other_items"] = self.events_style_other_links
             this_list["heading_text"] = instance.studentships_heading_text
+            this_list["item_template"] = "arkestra/universal_plugin_list_item.html"
+            self.lists.append(this_list)
+
+        if "lessons" in instance.display:
+            this_list = {"model": Lesson,}
+            this_list["items"] = Lesson.objects.get_items(instance)
+            # this_list["other_items"] = []
+            this_list["links_to_other_items"] = self.events_style_other_links
+            this_list["heading_text"] = instance.lessons_heading_text
             this_list["item_template"] = "arkestra/universal_plugin_list_item.html"
             self.lists.append(this_list)

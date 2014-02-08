@@ -4,11 +4,12 @@ from django.http import Http404
 
 from contacts_and_people.models import Entity
 
-from models import VacanciesPlugin, Vacancy, Studentship 
+from models import VacanciesPlugin, Vacancy, Studentship
 from cms_plugins import CMSVacanciesPlugin
 
 from arkestra_utilities.settings import NEWS_AND_EVENTS_LAYOUT, MAIN_NEWS_EVENTS_PAGE_LIST_LENGTH, IN_BODY_HEADING_LEVEL
 
+import pprint
 
 def common_settings(request, slug):
     if slug:
@@ -16,7 +17,7 @@ def common_settings(request, slug):
     else:
         entity = Entity.objects.base_entity()
     if not (entity.website and entity.website.published and entity.auto_vacancies_page):
-        raise Http404 
+        raise Http404
 
     request.auto_page_url = request.path
     # request.path = entity.get_website.get_absolute_url() # for the menu, so it knows where we are
@@ -35,13 +36,18 @@ def common_settings(request, slug):
     return instance, context, entity
 
 def vacancies_and_studentships(request, slug):
-    instance, context, entity = common_settings(request, slug)    
+    instance, context, entity = common_settings(request, slug)
+
+    # pprint.pprint(instance)
+    # pprint.pprint(entity)
+    # pprint.pprint(entity.vacancies_page_menu_title)
+    # pprint.pprint(dir(entity))
 
     instance.type = "main_page"
 
-    meta = {"description": "Vacancies and studentships",}
-    title = unicode(entity) + u" vacancies & studentships"
-    pagetitle = unicode(entity) + u" vacancies & studentships"
+    meta = {"description": unicode(entity.vacancies_page_menu_title),}
+    title = unicode(entity) + u" " + unicode(entity.vacancies_page_menu_title)
+    pagetitle = unicode(entity) + u" " + unicode(entity.vacancies_page_menu_title)
 
     CMSVacanciesPlugin().render(context, instance, None)
 
@@ -50,7 +56,7 @@ def vacancies_and_studentships(request, slug):
         "title": title,
         "meta": meta,
         "pagetitle": pagetitle,
-        "main_page_body_file": instance.main_page_body_file, 
+        "main_page_body_file": instance.main_page_body_file,
         "intro_page_placeholder": entity.vacancies_page_intro,
         'everything': instance,
         }
@@ -83,12 +89,12 @@ def archived_vacancies(request, slug):
         "main_page_body_file": instance.main_page_body_file,
         'everything': instance,}
         )
-    
+
     return render_to_response(
         "contacts_and_people/arkestra_page.html",
         context,
         )
-        
+
 def all_current_vacancies(request, slug):
     instance, context, entity = common_settings(request, slug)
 
@@ -111,7 +117,7 @@ def all_current_vacancies(request, slug):
         "main_page_body_file": instance.main_page_body_file,
         'everything': instance,}
         )
-    
+
     return render_to_response(
         "contacts_and_people/arkestra_page.html",
         context,
@@ -139,12 +145,12 @@ def archived_studentships(request, slug):
         "main_page_body_file": instance.main_page_body_file,
         'everything': instance,}
         )
-    
+
     return render_to_response(
         "contacts_and_people/arkestra_page.html",
         context,
         )
-        
+
 def all_current_studentships(request, slug):
     instance, context, entity = common_settings(request, slug)
 
@@ -167,7 +173,7 @@ def all_current_studentships(request, slug):
         "main_page_body_file": instance.main_page_body_file,
         'everything': instance,}
         )
-    
+
     return render_to_response(
         "contacts_and_people/arkestra_page.html",
         context,
@@ -205,12 +211,30 @@ def studentship(request, slug):
         studentship = get_object_or_404(Studentship, slug=slug)
     else:
         studentship = get_object_or_404(Studentship, slug=slug, published=True)
-    
+
     return render_to_response(
         "vacancies_and_studentships/studentship.html",
         {"studentship": studentship,
         "entity": studentship.hosted_by,
         "meta": {"description": studentship.description,},
+        },
+        RequestContext(request),
+    )
+
+def lesson(request, slug):
+    """
+    Responsible for publishing a studentship
+    """
+    if request.user.is_staff:
+        lesson = get_object_or_404(Lesson, slug=slug)
+    else:
+        lesson = get_object_or_404(Lesson, slug=slug, published=True)
+
+    return render_to_response(
+        "vacancies_and_studentships/lesson.html",
+        {"lesson": lesson,
+        "entity": lesson.hosted_by,
+        "meta": {"description": lesson.description,},
         },
         RequestContext(request),
     )

@@ -10,7 +10,7 @@ from arkestra_utilities.admin_mixins import AutocompleteMixin
 
 from contacts_and_people.templatetags.entity_tags import work_out_entity
 
-from models import VacanciesPlugin, Vacancy, Studentship
+from models import VacanciesPlugin, Vacancy, Studentship, Lesson
 from mixins import VacancyStudentshipPluginMixin
 from menu import menu_dict
 
@@ -24,7 +24,7 @@ class CMSVacanciesPlugin(VacancyStudentshipPluginMixin, ArkestraGenericPlugin, A
     name = _("Vacancies & Studentships")
     form = VacanciesStudentshipsPluginForm
     menu_cues = menu_dict
-    
+
     fieldsets = (
         (None, {
         'fields': (('display', 'layout', 'list_format',),  ( 'format', 'order_by', 'group_dates',), 'limit_to')
