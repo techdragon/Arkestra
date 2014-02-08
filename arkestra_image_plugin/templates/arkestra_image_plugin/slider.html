@@ -1,7 +1,9 @@
 {% load sekizai_tags thumbnail %}
 <ul id="slider{{ imageset.id }}" class="imageset slider" data-orbit data-options="animation_speed:7500;">
 	{% for item in imageset.items %}
-    	<li id="imageset-item-{{ imageset.id }}-{{ item.id }}">{% include "arkestra_image_plugin/includes/foundation_imageset_item.html" %}</li>
+    	<li id="imageset-item-{{ imageset.id }}-{{ item.id }}">
+    		{% include "arkestra_image_plugin/includes/foundation_imageset_item.html" %}
+    	</li>
 	{% endfor %}
 </ul>
 
