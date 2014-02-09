@@ -4,7 +4,7 @@ from django.http import Http404
 
 from contacts_and_people.models import Entity
 
-from models import VacanciesPlugin, Vacancy, Studentship
+from models import VacanciesPlugin, Vacancy, Studentship, Lesson
 from cms_plugins import CMSVacanciesPlugin
 
 from arkestra_utilities.settings import NEWS_AND_EVENTS_LAYOUT, MAIN_NEWS_EVENTS_PAGE_LIST_LENGTH, IN_BODY_HEADING_LEVEL
