@@ -2,7 +2,7 @@
 <ul id="slider{{ imageset.id }}" class="imageset slider" data-orbit data-options="animation: 'fade'; timer_speed:7500; animation_speed: 500; resume_on_mouseout: true; ">
 	{% for item in imageset.items %}
     	<li id="imageset-item-{{ imageset.id }}-{{ item.id }}">
-    		{% include "arkestra_imageplugin/includes/foundation_imageset_item.html" %}
+    		{% include "arkestra_image_plugin/includes/foundation_imageset_item.html" %}
     	</li>
 	{% endfor %}
 </ul>
