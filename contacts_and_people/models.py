@@ -846,6 +846,13 @@ class EntityMembersPluginEditor(CMSPlugin):
         related_name="entity_members_plugin",
         on_delete=models.SET_NULL)
 
+
+class EntityContactPluginEditor(CMSPlugin):
+    entity = models.ForeignKey(Entity, null=True, blank=True,
+        help_text="Leave blank for autoselect",
+        related_name="entity_contact_plugin",
+        on_delete=models.SET_NULL)
+
 # try:
 #     mptt.register(Entity)
 # except mptt.AlreadyRegistered:

@@ -1,0 +1,37 @@
+{% load debug_tags %}
+
+<div class="">
+<pre class="hide">{% details entity %}</pre>
+<pre class="hide">{% details entity.phone_contacts.all %}</pre>
+<pre class="hide">{% details entity.get_building %}</pre>
+</div>
+
+<div class="row">
+  <h3 class="text-center">Raqs Zahara can be contacted with the details below.</h3>
+</div>
+<div class="row">
+<div class="small-6 column">
+  <h4 class='text-left'>Zahara</h4>
+  <h6 class='text-center'>a.k.a. Tabetha</h6>
+  <dl>
+    <dt>Telephone</dt>
+      {% if phone %}
+      {% for phone_number in phone %}
+        <dd>{{ phone_number.area_code }}{{ phone_number.number }} {% if phone_number.label %} ({{ phone_number.label }}) {% endif %}</dd>
+      {% endfor %}
+      {% endif %}
+    <dt>Email</dt>
+    <dd>{{ entity.email }}</dd>
+  </dl>
+</div>
+
+<div class="small-6 column">
+  <dl>
+    <dt>Address</dt>
+    <dd>{{ entity.get_building.number }} {{ entity.get_building.street }} {{ entity.get_building.postcode }}</dd>
+  </dl>
+  <a href="{{ entity.get_building.get_absolute_url }}map/">
+    <img alt="map" src="http://maps.googleapis.com/maps/api/staticmap?center={{ entity.get_building.latitude }},{{ entity.get_building.longitude }}&zoom={{ entity.get_building.zoom|add:"-4" }}&size=640x640&markers=color:green|{{ entity.get_building.latitude }},{{ entity.get_building.longitude }}&sensor=false" />
+  </a>
+</div>
+</div>
