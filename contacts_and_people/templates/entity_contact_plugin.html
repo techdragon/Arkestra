@@ -2,8 +2,10 @@
 
 <div class="">
 <pre class="hide">{% details entity %}</pre>
+<pre class="hide">{% details entity.phone_contacts %}</pre>
 <pre class="hide">{% details entity.phone_contacts.all %}</pre>
-<pre class="hide">{% details entity.get_building %}</pre>
+<pre class="hide">{% details entity.phone_contacts.get %}</pre>
+
 </div>
 
 <div class="row">
@@ -15,10 +17,10 @@
   <h6 class='text-center'>a.k.a. Tabetha</h6>
   <dl>
     <dt>Telephone</dt>
-      {% if phone %}
-      {% for phone_number in phone %}
+      {% if entity.phone_contacts.get %}
+      {% with entity.phone_contacts.get as phone_number %}
         <dd>{{ phone_number.area_code }}{{ phone_number.number }} {% if phone_number.label %} ({{ phone_number.label }}) {% endif %}</dd>
-      {% endfor %}
+      {% endwith %}
       {% endif %}
     <dt>Email</dt>
     <dd>{{ entity.email }}</dd>
